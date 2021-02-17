@@ -102,7 +102,7 @@ const packageBuild = async (): Promise<void> => {
     // Format and fix code
     await run(`prettier --write ${input}/**/*.{ts,js,json}'`)();
     // Compile project
-    // await packageCompile();
+    await packageCompile();
     // Copy files
     await filesCopy([`${projectDirectory}/package.json`, `!${projectDirectory}/node_modules/**/*`], output);
 };

@@ -14,7 +14,7 @@
         "noImplicitAny": false,
         "target": "es2015",
         "types": ["node"],
-        "typeRoots": ["./typings", "../../node_modules/@types/", "../../node_modules/fabric-client/@types/"],
+        "typeRoots": ["./typings", "../../node_modules/@types/"],
         "baseUrl": "."
     },
     "files": ["gulpfile.ts"]

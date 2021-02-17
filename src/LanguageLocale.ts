@@ -2,6 +2,7 @@ import { IDestroyable } from '@ts-core/common';
 import { ExtendedError } from '@ts-core/common/error';
 import * as _ from 'lodash';
 import * as MessageFormat from 'messageformat';
+import { Language } from './Language';
 
 export class LanguageLocale extends IDestroyable {
     // --------------------------------------------------------------------------
@@ -22,13 +23,13 @@ export class LanguageLocale extends IDestroyable {
     //
     // --------------------------------------------------------------------------
 
-    constructor(locale: string, rawTranslation?: any) {
+    constructor(locale: string | Language, rawTranslation?: any) {
         super();
-        this._locale = locale;
+        this._locale = _.isString(locale) ? locale : locale.locale;
         this._rawTranslation = rawTranslation;
 
         this.history = new Map();
-        this.formatter = new MessageFormat(locale);
+        this.formatter = new MessageFormat(this._locale);
     }
 
     // --------------------------------------------------------------------------
@@ -44,8 +45,8 @@ export class LanguageLocale extends IDestroyable {
         return this.compile(_.get(this.rawTranslation, key), params);
     }
 
-    public compile(expression: string, params?: any): string {
-        return this.formatter.compile(expression)(!_.isNil(params) ? params : {});
+    public compile(phrase: string, params?: any): string {
+        return this.formatter.compile(phrase)(!_.isNil(params) ? params : {});
     }
 
     public isHasTranslation(key: string): boolean {

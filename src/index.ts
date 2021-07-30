@@ -1,4 +1,7 @@
+export * from './ILanguageLoader';
 export * from './ILanguageTranslator';
 export * from './Language';
-export * from './LanguageTranslator';
 export * from './LanguageLocale';
+
+export * from './loader/LanguageFileLoader';
+export * from './translator/LanguageTranslator';

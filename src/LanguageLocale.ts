@@ -1,7 +1,7 @@
 import { IDestroyable } from '@ts-core/common';
 import { ExtendedError } from '@ts-core/common/error';
 import * as _ from 'lodash';
-import * as MessageFormat from 'messageformat';
+import MessageFormat, * as GLOBAL_MESSAGE_FORMAT from '@messageformat/core';
 import { Language } from './Language';
 
 export class LanguageLocale extends IDestroyable {
@@ -15,7 +15,7 @@ export class LanguageLocale extends IDestroyable {
     protected _rawTranslation: any;
 
     protected history: Map<string, string>;
-    protected formatter: any;
+    protected formatter: MessageFormat;
 
     // --------------------------------------------------------------------------
     //
@@ -29,7 +29,7 @@ export class LanguageLocale extends IDestroyable {
         this._rawTranslation = rawTranslation;
 
         this.history = new Map();
-        this.formatter = new MessageFormat(this._locale);
+        this.formatter = LanguageLocale.create(this._locale);
     }
 
     // --------------------------------------------------------------------------
@@ -94,5 +94,16 @@ export class LanguageLocale extends IDestroyable {
 
     public get rawTranslation(): any {
         return this._rawTranslation;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Private Properties
+    //
+    // --------------------------------------------------------------------------
+
+    public static create(locale: string): MessageFormat {
+        let MESSAGE_FORMAT = GLOBAL_MESSAGE_FORMAT as any;
+        return new MESSAGE_FORMAT(locale);
     }
 }

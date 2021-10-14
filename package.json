@@ -10,8 +10,8 @@
     },
     "license": "ISC",
     "dependencies": {
-        "@ts-core/common": "^1.0.182",
-        "messageformat": "2.3.0"
+        "@messageformat/core": "^3.0.0",
+        "@ts-core/common": "^1.0.182"
     },
     "devDependencies": {
         "gulp-npm-publisher": "1.0.1"

@@ -49,8 +49,12 @@ export class LanguageLocale extends IDestroyable {
         return this.formatter.compile(phrase)(!_.isNil(params) ? params : {});
     }
 
-    public isHasTranslation(key: string): boolean {
-        return _.isString(_.get(this.rawTranslation, key));
+    public isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean): boolean {
+        let value = _.get(this.rawTranslation, key);
+        if (!_.isString(value)) {
+            return false;
+        }
+        return isOnlyIfNotEmpty ? !_.isEmpty(value) : true;
     }
 
     public destroy(): void {

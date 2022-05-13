@@ -23,6 +23,17 @@ export class LanguageUrlLoader<T = any> extends Destroyable implements ILanguage
         super();
         this.url = url;
     }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Protected Methods
+    //
+    // --------------------------------------------------------------------------
+
+    protected async loadLocale(locale: string): Promise<T> {
+        return axios.get(`${this.url}${locale}`);
+    }
+
     // --------------------------------------------------------------------------
     //
     //  Public Methods
@@ -30,7 +41,7 @@ export class LanguageUrlLoader<T = any> extends Destroyable implements ILanguage
     // --------------------------------------------------------------------------
 
     public async load(locale: string): Promise<T> {
-        this._translation = await axios.get(`${this.url}${locale}`);
+        this._translation = await this.loadLocale(locale);
         return this.translation;
     }
 

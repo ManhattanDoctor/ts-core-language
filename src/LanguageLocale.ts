@@ -1,5 +1,4 @@
-import { IDestroyable } from '@ts-core/common';
-import { ExtendedError } from '@ts-core/common/error';
+import { IDestroyable, ExtendedError } from '@ts-core/common';
 import * as _ from 'lodash';
 import MessageFormat, * as GLOBAL_MESSAGE_FORMAT from '@messageformat/core';
 import { Language } from './Language';

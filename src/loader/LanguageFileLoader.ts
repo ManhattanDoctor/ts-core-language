@@ -1,7 +1,5 @@
 import { Destroyable } from '@ts-core/common';
-import { ExtendedError } from '@ts-core/common/error';
-import { PromiseReflector } from '@ts-core/common/promise';
-import { CloneUtil } from '@ts-core/common/util';
+import { ExtendedError, CloneUtil, PromiseReflector } from '@ts-core/common';
 import { ILanguageLoader } from '../ILanguageLoader';
 import axios from 'axios';
 import * as _ from 'lodash';

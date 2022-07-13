@@ -1,6 +1,5 @@
 import { IDestroyable } from '@ts-core/common';
-import { ExtendedError } from '@ts-core/common/error';
-import { ObservableData } from '@ts-core/common/observer';
+import { ExtendedError, ObservableData } from '@ts-core/common';
 import { Observable } from 'rxjs';
 import { LanguageLocale } from './LanguageLocale';
 

@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/language",
-    "version": "2.0.3",
+    "version": "3.0.0",
     "description": "Classes and utils for language",
     "main": "index.js",
     "scripts": {},
@@ -11,11 +11,11 @@
     "license": "ISC",
     "dependencies": {
         "@messageformat/core": "^3.0.0",
-        "@ts-core/common": "^2.0.2"
+        "@ts-core/common": "^3.0.2"
     },
     "devDependencies": {
         "@types/node": "^14.14.31",
-        "gulp-npm-publisher": "^2.0.2"
+        "gulp-npm-module-publisher": "^3.0.0"
     },
     "repository": {
         "type": "git",

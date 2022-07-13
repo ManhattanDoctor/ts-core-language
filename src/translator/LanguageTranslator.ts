@@ -1,7 +1,4 @@
-import { DestroyableContainer } from '@ts-core/common';
-import { ExtendedError } from '@ts-core/common/error';
-import { ObservableData } from '@ts-core/common/observer';
-import { ObjectUtil } from '@ts-core/common/util';
+import { ObjectUtil, ObservableData, DestroyableContainer, ExtendedError } from '@ts-core/common';
 import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { ILanguageTranslator, LanguageTranslatorEvent, ILanguageTranslatorItem } from '../ILanguageTranslator';

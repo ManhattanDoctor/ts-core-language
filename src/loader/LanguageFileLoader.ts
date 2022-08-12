@@ -1,10 +1,9 @@
-import { Destroyable } from '@ts-core/common';
 import { ExtendedError, CloneUtil, PromiseReflector } from '@ts-core/common';
-import { ILanguageLoader } from '../ILanguageLoader';
+import { LanguageLoaderBase } from './LanguageLoaderBase';
 import axios from 'axios';
 import * as _ from 'lodash';
 
-export class LanguageFileLoader<T = any> extends Destroyable implements ILanguageLoader<T> {
+export class LanguageFileLoader<T = any> extends LanguageLoaderBase<T> {
     // --------------------------------------------------------------------------
     //
     //  Properties
@@ -13,8 +12,6 @@ export class LanguageFileLoader<T = any> extends Destroyable implements ILanguag
 
     public url: string;
     public prefixes: Array<string>;
-
-    private _translation: T;
 
     // --------------------------------------------------------------------------
     //
@@ -30,11 +27,11 @@ export class LanguageFileLoader<T = any> extends Destroyable implements ILanguag
 
     // --------------------------------------------------------------------------
     //
-    //  Public Methods
+    //  Protected Methods
     //
     // --------------------------------------------------------------------------
 
-    public async load(locale: string): Promise<T> {
+    protected async loadLocale(locale: string): Promise<T> {
         let files = this.prefixes.map(item => PromiseReflector.create(axios.get(this.url + locale + item)));
         let items = await Promise.all(files);
 
@@ -43,11 +40,16 @@ export class LanguageFileLoader<T = any> extends Destroyable implements ILanguag
             throw new ExtendedError(`Unable to load "${locale}" locale`);
         }
 
-        this._translation = {} as any;
-        items.forEach(item => CloneUtil.deepExtend(this._translation, item.value.data));
-
-        return this.translation;
+        let item = {} as any;
+        items.forEach(item => CloneUtil.deepExtend(item, item.value.data));
+        return item;
     }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Public Methods
+    //
+    // --------------------------------------------------------------------------
 
     public destroy(): void {
         if (this.isDestroyed) {
@@ -56,16 +58,5 @@ export class LanguageFileLoader<T = any> extends Destroyable implements ILanguag
         super.destroy();
         this.url = null;
         this.prefixes = null;
-        this._translation = null;
-    }
-
-    // --------------------------------------------------------------------------
-    //
-    //  Public Properties
-    //
-    // --------------------------------------------------------------------------
-
-    public get translation(): T {
-        return this._translation;
     }
 }

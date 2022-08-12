@@ -37,6 +37,7 @@ export class LanguagePreloadLoader<T = any> extends LanguageLoader {
     //
     // --------------------------------------------------------------------------
 
+    
     public async load(locale: string): Promise<T> {
         this.locale = locale;
         return super.load(locale);

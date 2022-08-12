@@ -1,9 +1,9 @@
 import { ExtendedError, CloneUtil, PromiseReflector } from '@ts-core/common';
-import { LanguageLoaderBase } from './LanguageLoaderBase';
+import { LanguageLoader } from './LanguageLoader';
 import axios from 'axios';
 import * as _ from 'lodash';
 
-export class LanguageFileLoader<T = any> extends LanguageLoaderBase<T> {
+export class LanguageFileLoader<T = any> extends LanguageLoader<T> {
     // --------------------------------------------------------------------------
     //
     //  Properties

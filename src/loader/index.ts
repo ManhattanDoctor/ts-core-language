@@ -1,4 +1,4 @@
 export * from './LanguageUrlLoader';
 export * from './LanguageFileLoader';
 export * from './LanguageDelegateLoader';
-export * from './LanguageLoaderBase';
+export * from './LanguageLoader';

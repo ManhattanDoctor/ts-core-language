@@ -7,5 +7,7 @@ export * from './error/TemplateError';
 //
 export * from './loader/LanguageFileLoader';
 export * from './loader/LanguageUrlLoader';
+export * from './loader/LanguageDelegateLoader';
+export * from './loader/LanguageLoader';
 //
 export * from './translator/LanguageTranslator';

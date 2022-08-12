@@ -34,7 +34,7 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
     //
     // --------------------------------------------------------------------------
 
-    protected commitLocaleProperties(): void {}
+    protected commitLocaleProperties(): void { }
 
     protected getLink(text: string): string {
         if (_.isNil(text) || _.isNil(this.linkSymbol) || text.indexOf(this.linkSymbol) !== 0) {
@@ -51,7 +51,7 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
         let text = null;
         let type = null;
         if (_.isNil(this.locale)) {
-            text = `Locale is undefined`;
+            text = `${item.key} (locale is undefined)`;
             type = LanguageTranslatorEvent.LOCALE_UNDEFINED;
         } else if (_.isNil(item.key)) {
             text = `Key is undefined`;

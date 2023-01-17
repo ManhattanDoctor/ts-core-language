@@ -32,7 +32,7 @@ export class LanguageFileLoader<T = any> extends LanguageLoader<T> {
     // --------------------------------------------------------------------------
 
     protected async loadLocale(locale: string): Promise<T> {
-        let files = this.prefixes.map(item => PromiseReflector.create(axios.get(this.url + locale + item)));
+        let files = this.prefixes.map(item => PromiseReflector.create(this.createLoader(locale, item)));
         let items = await Promise.all(files);
 
         items = items.filter(item => item.isComplete);
@@ -43,6 +43,10 @@ export class LanguageFileLoader<T = any> extends LanguageLoader<T> {
         let value = {} as any;
         items.forEach(item => CloneUtil.deepExtend(value, item.value.data));
         return value;
+    }
+
+    protected createLoader(locale: string, name: string): Promise<any> {
+        return axios.get(this.url + locale + name)
     }
 
     // --------------------------------------------------------------------------

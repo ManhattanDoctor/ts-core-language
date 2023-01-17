@@ -41,12 +41,13 @@ export class LanguageFileLoader<T = any> extends LanguageLoader<T> {
         }
 
         let value = {} as any;
-        items.forEach(item => CloneUtil.deepExtend(value, item.value.data));
+        items.forEach(item => CloneUtil.deepExtend(value, item.value));
         return value;
     }
 
-    protected createLoader(locale: string, name: string): Promise<any> {
-        return axios.get(this.url + locale + name)
+    protected async createLoader(locale: string, name: string): Promise<any> {
+        let { data } = await axios.get(this.url + locale + name);
+        return data;
     }
 
     // --------------------------------------------------------------------------

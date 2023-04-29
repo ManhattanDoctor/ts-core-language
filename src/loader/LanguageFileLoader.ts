@@ -45,7 +45,7 @@ export class LanguageFileLoader<T = any> extends LanguageLoader<T> {
         return value;
     }
 
-    protected async createLoader(locale: string, name: string): Promise<any> {
+    protected async createLoader<T>(locale: string, name: string): Promise<T> {
         let { data } = await axios.get(this.url + locale + name);
         return data;
     }

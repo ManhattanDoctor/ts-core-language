@@ -37,7 +37,7 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
     protected commitLocaleProperties(): void { }
 
     protected getLink(item: string): string {
-        if (_.isNil(item) || _.isNil(this.linkSymbol) || item.indexOf(this.linkSymbol) !== 0) {
+        if (!_.isString(item) || _.isNil(this.linkSymbol) || item.indexOf(this.linkSymbol) !== 0) {
             return null;
         }
         return item.substr(1).trim();

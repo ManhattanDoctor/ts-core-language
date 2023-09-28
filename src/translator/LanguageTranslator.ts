@@ -36,11 +36,11 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
 
     protected commitLocaleProperties(): void { }
 
-    protected getLink(text: string): string {
-        if (_.isNil(text) || _.isNil(this.linkSymbol) || text.indexOf(this.linkSymbol) !== 0) {
+    protected getLink(item: string): string {
+        if (_.isNil(item) || _.isNil(this.linkSymbol) || item.indexOf(this.linkSymbol) !== 0) {
             return null;
         }
-        return text.substr(1).trim();
+        return item.substr(1).trim();
     }
 
     protected getUniqueKey(item: ILanguageTranslatorItem): string {
@@ -104,6 +104,10 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
     public compile(item: ILanguageTranslatorItem): string {
         let text = this.validate(item);
         return !_.isNil(text) ? text : this.locale.compile(item.key, item.params);
+    }
+
+    public isLink(key: string): boolean {
+        return !_.isNil(this.getLink(_.get(this.locale.rawTranslation, key)));
     }
 
     public isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean): boolean {

@@ -106,8 +106,12 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
         return !_.isNil(text) ? text : this.locale.compile(item.key, item.params);
     }
 
-    public isLink(key: string): boolean {
-        return !_.isNil(this.getLink(_.get(this.locale.rawTranslation, key)));
+    public isLink(value: string): boolean {
+        return !_.isNil(this.getLink(value));
+    }
+
+    public isKeyLink(key: string): boolean {
+        return this.isLink(_.get(this.locale.rawTranslation, key));
     }
 
     public isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean): boolean {

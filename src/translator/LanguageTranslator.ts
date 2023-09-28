@@ -36,13 +36,6 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
 
     protected commitLocaleProperties(): void { }
 
-    protected getLink(item: string): string {
-        if (!_.isString(item) || _.isNil(this.linkSymbol) || item.indexOf(this.linkSymbol) !== 0) {
-            return null;
-        }
-        return item.substr(1).trim();
-    }
-
     protected getUniqueKey(item: ILanguageTranslatorItem): string {
         return !_.isNil(item.params) ? `${item.key}_${JSON.stringify(ObjectUtil.sortKeys(item.params))}` : item.key;
     }
@@ -89,7 +82,7 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
         let { key, params } = item;
         if (this.isHasTranslation(key)) {
             text = this.locale.translate(key, params);
-            let link = this.getLink(text);
+            let link = this.getLinkKey(text);
             if (!_.isNil(link)) {
                 return this.translate({ key: link, params });
             }
@@ -106,16 +99,25 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
         return !_.isNil(text) ? text : this.locale.compile(item.key, item.params);
     }
 
-    public isLink(value: string): boolean {
-        return !_.isNil(this.getLink(value));
-    }
-
-    public isKeyLink(key: string): boolean {
-        return this.isLink(_.get(this.locale.rawTranslation, key));
-    }
-
     public isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean): boolean {
         return !_.isNil(this.locale) ? this.locale.isHasTranslation(key, isOnlyIfNotEmpty) : false;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Link Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public getLinkKey(item: string): string {
+        if (!_.isString(item) || _.isNil(this.linkSymbol) || item.indexOf(this.linkSymbol) !== 0) {
+            return null;
+        }
+        return item.substr(1).trim();
+    }
+
+    public isLink(key: string): boolean {
+        return !_.isNil(this.getLinkKey(_.get(this.locale.rawTranslation, key)));
     }
 
     // --------------------------------------------------------------------------

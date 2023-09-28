@@ -61,6 +61,29 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
         return text;
     }
 
+    private translateLinks<T>(item: T, path?: string): T {
+        for (let [key, value] of Object.entries(item)) {
+            let rootKey = !_.isNil(path) ? `${path}.${key}` : key;
+            if (this.isLink(rootKey)) {
+                item[key] = this.translate({ key: rootKey });
+                continue;
+            }
+            if (_.isObject(value)) {
+                this.translateLinks(value, rootKey);
+                continue;
+            }
+            if (_.isArray(value)) {
+                for (let i = 0; i < value.length; i++) {
+                    let linkKey = this.getLinkKey(value[i]);
+                    if (!_.isNil(linkKey)) {
+                        value.splice(i, 1, this.translate({ key: linkKey }));
+                    }
+                }
+            }
+        }
+        return item;
+    }
+
     // --------------------------------------------------------------------------
     //
     // 	Public Methods
@@ -101,6 +124,10 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
 
     public isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean): boolean {
         return !_.isNil(this.locale) ? this.locale.isHasTranslation(key, isOnlyIfNotEmpty) : false;
+    }
+
+    public rawWithTranslatedLinks(): any {
+        return this.translateLinks(_.cloneDeep(this.locale.rawTranslation));;
     }
 
     // --------------------------------------------------------------------------

@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import MessageFormat, * as GLOBAL_MESSAGE_FORMAT from '@messageformat/core';
 import { Language } from './Language';
 
-export class LanguageLocale extends IDestroyable {
+export class LanguageLocale<T = any> extends IDestroyable {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -11,7 +11,7 @@ export class LanguageLocale extends IDestroyable {
     // --------------------------------------------------------------------------
 
     protected _locale: string;
-    protected _rawTranslation: any;
+    protected _rawTranslation: T;
 
     protected history: Map<string, string>;
     protected formatter: MessageFormat;
@@ -95,7 +95,7 @@ export class LanguageLocale extends IDestroyable {
         return this._locale;
     }
 
-    public get rawTranslation(): any {
+    public get rawTranslation(): T {
         return this._rawTranslation;
     }
 

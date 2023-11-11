@@ -126,8 +126,8 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
         return !_.isNil(this.locale) ? this.locale.isHasTranslation(key, isOnlyIfNotEmpty) : false;
     }
 
-    public rawWithTranslatedLinks(): any {
-        return this.translateLinks(_.cloneDeep(this.locale.rawTranslation));;
+    public getRawWithTranslatedLinks(): any {
+        return this.translateLinks(_.cloneDeep(this.locale.rawTranslation));
     }
 
     // --------------------------------------------------------------------------

@@ -39,10 +39,13 @@ export class LanguageFileLoader<T = any> extends LanguageLoader<T> {
         if (_.isEmpty(items)) {
             throw new ExtendedError(`Unable to load "${locale}" locale`);
         }
+        return this.createLocale(items.map(item => item.value.data));
+    }
 
-        let value = {} as any;
-        items.forEach(item => CloneUtil.deepExtend(value, item.value.data));
-        return value;
+    protected createLocale(files: Array<any>): T {
+        let item = {} as T;
+        files.forEach(file => CloneUtil.deepExtend(item, file));
+        return item;
     }
 
     // --------------------------------------------------------------------------

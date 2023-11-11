@@ -4,15 +4,11 @@ import { Observable } from 'rxjs';
 import { LanguageLocale } from './LanguageLocale';
 
 export interface ILanguageTranslator extends IDestroyable {
-    compile(item: ILanguageTranslatorItem): string;
-    translate(item: ILanguageTranslatorItem): string;
+    compile<T = any>(key: string, params?: T): string;
+    translate<T = any>(key: string, params?: T): string;
     isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean): boolean;
     locale: LanguageLocale;
     readonly events: Observable<ObservableData<LanguageTranslatorEvent, ExtendedError>>;
-}
-export interface ILanguageTranslatorItem<T = any> {
-    key?: string;
-    params?: T;
 }
 
 export enum LanguageTranslatorEvent {

@@ -1,7 +1,7 @@
 import { ObjectUtil, ObservableData, DestroyableContainer, ExtendedError } from '@ts-core/common';
 import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
-import { ILanguageTranslator, LanguageTranslatorEvent, ILanguageTranslatorItem } from '../ILanguageTranslator';
+import { ILanguageTranslator, LanguageTranslatorEvent } from '../ILanguageTranslator';
 import { LanguageLocale } from '../LanguageLocale';
 
 export class LanguageTranslator extends DestroyableContainer implements ILanguageTranslator {
@@ -36,26 +36,26 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
 
     protected commitLocaleProperties(): void { }
 
-    protected getUniqueKey(item: ILanguageTranslatorItem): string {
-        return !_.isNil(item.params) ? `${item.key}_${JSON.stringify(ObjectUtil.sortKeys(item.params))}` : item.key;
+    protected getUniqueKey<T>(key: string, params?: T): string {
+        return !_.isNil(params) ? `${key}_${JSON.stringify(ObjectUtil.sortKeys(params))}` : key;
     }
 
-    protected validate(item: ILanguageTranslatorItem): string {
+    protected validate<T>(key: string, params?: T): string {
         let text = null;
         let type = null;
         if (_.isNil(this.locale)) {
-            text = `${item.key} (locale is undefined)`;
+            text = `${key} (locale is undefined)`;
             type = LanguageTranslatorEvent.LOCALE_UNDEFINED;
-        } else if (_.isNil(item.key)) {
+        } else if (_.isNil(key)) {
             text = `Key is undefined`;
             type = LanguageTranslatorEvent.KEY_UNDEFINED;
-        } else if (!_.isString(item.key)) {
+        } else if (!_.isString(key)) {
             text = `Key must be string`;
             type = LanguageTranslatorEvent.KEY_INVALID;
         }
 
         if (!_.isNil(text)) {
-            this.observer.next(new ObservableData(type, null, new ExtendedError(text, null, item)));
+            this.observer.next(new ObservableData(type, null, new ExtendedError(text, null, { key, params })));
         }
 
         return text;
@@ -65,7 +65,7 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
         for (let [key, value] of Object.entries(item)) {
             let rootKey = !_.isNil(path) ? `${path}.${key}` : key;
             if (this.isLink(rootKey)) {
-                item[key] = this.translate({ key: rootKey });
+                item[key] = this.translate(rootKey);
                 continue;
             }
             if (_.isObject(value)) {
@@ -76,7 +76,7 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
                 for (let i = 0; i < value.length; i++) {
                     let linkKey = this.getLinkKey(value[i]);
                     if (!_.isNil(linkKey)) {
-                        value.splice(i, 1, this.translate({ key: linkKey }));
+                        value.splice(i, 1, this.translate(linkKey));
                     }
                 }
             }
@@ -90,36 +90,35 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
     //
     // --------------------------------------------------------------------------
 
-    public translate(item: ILanguageTranslatorItem): string {
-        let text = this.validate(item);
+    public translate<T>(key: string, params?: T): string {
+        let text = this.validate(key, params);
         if (!_.isNil(text)) {
             return text;
         }
 
-        let uniqueKey = this.getUniqueKey(item);
+        let uniqueKey = this.getUniqueKey(key, params);
         text = this.locale.getFromHistory(uniqueKey);
         if (!_.isNil(text)) {
             return text;
         }
 
-        let { key, params } = item;
         if (this.isHasTranslation(key)) {
             text = this.locale.translate(key, params);
             let link = this.getLinkKey(text);
             if (!_.isNil(link)) {
-                return this.translate({ key: link, params });
+                return this.translate(link, params);
             }
         } else {
             text = key;
-            this.observer.next(new ObservableData(LanguageTranslatorEvent.KEY_NOT_FOUND, null, new ExtendedError(text, null, item)));
+            this.observer.next(new ObservableData(LanguageTranslatorEvent.KEY_NOT_FOUND, null, new ExtendedError(text, null, { key, params })));
         }
         this.locale.addToHistory(uniqueKey, text);
         return text;
     }
 
-    public compile(item: ILanguageTranslatorItem): string {
-        let text = this.validate(item);
-        return !_.isNil(text) ? text : this.locale.compile(item.key, item.params);
+    public compile<T>(key: string, params?: T): string {
+        let text = this.validate(key, params);
+        return !_.isNil(text) ? text : this.locale.compile(key, params);
     }
 
     public isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean): boolean {

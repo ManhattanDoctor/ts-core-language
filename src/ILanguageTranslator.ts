@@ -6,7 +6,9 @@ import { LanguageLocale } from './LanguageLocale';
 export interface ILanguageTranslator extends IDestroyable {
     compile<T = any>(key: string, params?: T): string;
     translate<T = any>(key: string, params?: T): string;
+    getRawTranslated<T = any>(): T;
     isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean): boolean;
+
     locale: LanguageLocale;
     readonly events: Observable<ObservableData<LanguageTranslatorEvent, ExtendedError>>;
 }

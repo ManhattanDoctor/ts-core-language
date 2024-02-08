@@ -1,6 +1,7 @@
 export * from './ILanguageLoader';
 export * from './ILanguageTranslator';
 export * from './Language';
+export * from './LanguageUtil';
 export * from './LanguageLocale';
 //
 export * from './error/TemplateError';

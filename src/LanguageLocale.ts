@@ -1,6 +1,6 @@
 import { IDestroyable, ExtendedError } from '@ts-core/common';
 import * as _ from 'lodash';
-import MessageFormat, * as GLOBAL_MESSAGE_FORMAT from '@messageformat/core';
+import MessageFormat, * as MESSAGE_FORMAT from '@messageformat/core';
 import { Language } from './Language';
 
 export class LanguageLocale<T = any> extends IDestroyable {
@@ -106,7 +106,6 @@ export class LanguageLocale<T = any> extends IDestroyable {
     // --------------------------------------------------------------------------
 
     public static create(locale: string): MessageFormat {
-        let MESSAGE_FORMAT = GLOBAL_MESSAGE_FORMAT as any;
-        return new MESSAGE_FORMAT(locale);
+        return new MESSAGE_FORMAT.default(locale);
     }
 }

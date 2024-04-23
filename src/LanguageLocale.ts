@@ -106,6 +106,7 @@ export class LanguageLocale<T = any> extends IDestroyable {
     // --------------------------------------------------------------------------
 
     public static create(locale: string): MessageFormat {
-        return new MESSAGE_FORMAT.default(locale);
+        let Constructor: any = !_.isNil(MESSAGE_FORMAT.default) ? MESSAGE_FORMAT.default : MESSAGE_FORMAT;
+        return new Constructor(locale);
     }
 }

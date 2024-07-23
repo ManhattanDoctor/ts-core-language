@@ -61,7 +61,7 @@ export abstract class LanguageProject extends Destroyable {
         }
     }
 
-    public async translate(key: string, params?: any, locale?: string): Promise<any> {
+    public translate(key: string, params?: any, locale?: string): string {
         if (_.isNil(locale)) {
             locale = this.defaultLocale;
         }
@@ -72,7 +72,7 @@ export abstract class LanguageProject extends Destroyable {
         return translator.translate(key, params);
     }
 
-    public async getRawTranslated<T = any>(locale?: string): Promise<T> {
+    public getRawTranslated<T = any>(locale?: string): T {
         if (_.isNil(locale)) {
             locale = this.defaultLocale;
         }
@@ -83,7 +83,7 @@ export abstract class LanguageProject extends Destroyable {
         return translator.getRawTranslated();
     }
 
-    public async getRawTranslation<T = any>(locale?: string): Promise<T> {
+    public getRawTranslation<T = any>(locale?: string): T {
         if (_.isNil(locale)) {
             locale = this.defaultLocale;
         }
@@ -102,7 +102,7 @@ export abstract class LanguageProject extends Destroyable {
         this.locales.clear();
         this.locales = null;
     }
-    
+
     //--------------------------------------------------------------------------
     //
     // 	Public Properties

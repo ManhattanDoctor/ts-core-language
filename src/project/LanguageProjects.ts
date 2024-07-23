@@ -31,12 +31,6 @@ export abstract class LanguageProjects extends Destroyable {
 
     protected abstract createProject(path: string, project: ILanguageProjectSettings): Promise<LanguageProject>;
 
-    /*
-        let item = new LanguageProject(project);
-        await item.load(path, locales, prefixes);
-        return item;
-    */
-
     //--------------------------------------------------------------------------
     //
     // 	Public Methods
@@ -50,7 +44,7 @@ export abstract class LanguageProjects extends Destroyable {
         }
     }
 
-    public async translate(key: string, params?: any, project?: string, locale?: string,): Promise<any> {
+    public translate(key: string, params?: any, project?: string, locale?: string): string {
         if (_.isNil(project)) {
             project = this.defaultProject;
         }
@@ -61,7 +55,7 @@ export abstract class LanguageProjects extends Destroyable {
         return item.translate(key, params, locale);
     }
 
-    public async getRawTranslation<T = any>(project?: string, locale?: string): Promise<T> {
+    public getRawTranslation<T = any>(project?: string, locale?: string): Promise<T> {
         if (_.isNil(project)) {
             project = this.defaultProject;
         }
@@ -72,7 +66,7 @@ export abstract class LanguageProjects extends Destroyable {
         return item.getRawTranslation(locale);
     }
 
-    public async getRawTranslated<T = any>(project?: string, locale?: string): Promise<T> {
+    public getRawTranslated<T = any>(project?: string, locale?: string): T {
         if (_.isNil(project)) {
             project = this.defaultProject;
         }

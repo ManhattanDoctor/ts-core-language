@@ -31,7 +31,7 @@ export class LanguageProjectProxy extends Destroyable {
     //
     //--------------------------------------------------------------------------
 
-    public async translate(key: string, params?: any, locale?: string): Promise<any> {
+    public translate(key: string, params?: any, locale?: string): string {
         return this.projects.translate(key, params, this.name, locale);
     }
 

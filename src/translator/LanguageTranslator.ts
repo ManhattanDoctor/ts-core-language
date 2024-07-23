@@ -1,7 +1,8 @@
 import { ObjectUtil, ObservableData, DestroyableContainer, ExtendedError } from '@ts-core/common';
-import { Observable, Subject } from 'rxjs';
+import { ILanguageTranslator } from './ILanguageTranslator';
+import { LanguageTranslatorEvent } from './LanguageTranslatorEvent';
 import { LanguageLocale } from '../LanguageLocale';
-import { ILanguageTranslator, LanguageTranslatorEvent } from '../ILanguageTranslator';
+import { Observable, Subject } from 'rxjs';
 import * as _ from 'lodash';
 
 export class LanguageTranslator extends DestroyableContainer implements ILanguageTranslator {
@@ -13,8 +14,8 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
 
     protected _locale: LanguageLocale;
 
-    protected observer: Subject<ObservableData<LanguageTranslatorEvent, ExtendedError>>;
     protected linkSymbol: string;
+    protected observer: Subject<ObservableData<LanguageTranslatorEvent, ExtendedError>>;
     protected rawTranslated: any;
 
     // --------------------------------------------------------------------------
@@ -23,9 +24,11 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
     //
     // --------------------------------------------------------------------------
 
-    constructor(linkSymbol?: string) {
+    constructor(linkSymbol?: string, locale?: LanguageLocale) {
         super();
         this.observer = new Subject();
+
+        this.locale = locale;
         this.linkSymbol = !_.isNil(linkSymbol) ? linkSymbol : '⇛';
     }
 
@@ -128,9 +131,13 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
 
     public getRawTranslated<T = any>(): T {
         if (_.isNil(this.rawTranslated)) {
-            this.rawTranslated = this.translateLinks(_.cloneDeep(this.locale.rawTranslation));
+            this.rawTranslated = this.translateLinks(_.cloneDeep(this.getRawTranslation()));
         }
         return this.rawTranslated;
+    }
+
+    public getRawTranslation<T = any>(): T {
+        return this.locale.rawTranslation;
     }
 
     public destroy(): void {
@@ -155,7 +162,7 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
     }
 
     public isLink(key: string): boolean {
-        return !_.isNil(this.getLinkKey(_.get(this.locale.rawTranslation, key)));
+        return !_.isNil(this.getLinkKey(_.get(this.getRawTranslation(), key)));
     }
 
     // --------------------------------------------------------------------------

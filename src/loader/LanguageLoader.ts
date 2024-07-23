@@ -1,5 +1,5 @@
 import { Destroyable } from '@ts-core/common';
-import { ILanguageLoader } from '../ILanguageLoader';
+import { ILanguageLoader } from './ILanguageLoader';
 import * as _ from 'lodash';
 
 export abstract class LanguageLoader<T = any> extends Destroyable implements ILanguageLoader<T> {

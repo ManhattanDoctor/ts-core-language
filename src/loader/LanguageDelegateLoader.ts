@@ -1,4 +1,4 @@
-import { ILanguageLoader } from '../ILanguageLoader';
+import { ILanguageLoader } from '../loader';
 import { LanguageLoader } from './LanguageLoader';
 import * as _ from 'lodash';
 

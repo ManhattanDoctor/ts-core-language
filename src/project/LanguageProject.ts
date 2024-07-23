@@ -102,7 +102,7 @@ export abstract class LanguageProject extends Destroyable {
         this.locales.clear();
         this.locales = null;
     }
-
+    
     //--------------------------------------------------------------------------
     //
     // 	Public Properties

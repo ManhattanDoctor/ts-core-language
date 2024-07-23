@@ -1,0 +1,7 @@
+
+export enum LanguageTranslatorEvent {
+    KEY_INVALID = 'KEY_INVALID',
+    KEY_UNDEFINED = 'KEY_UNDEFINED',
+    KEY_NOT_FOUND = 'KEY_NOT_FOUND',
+    LOCALE_UNDEFINED = 'LOCALE_UNDEFINED'
+}

@@ -16,7 +16,6 @@ export class LanguageProject extends Destroyable {
 
     protected locales: Map<string, ILanguageTranslator>;
     protected defaultLocale: string;
-
     protected loadTranslationRawFunction: LanguageLoadTranslationRawFunction;
 
     //--------------------------------------------------------------------------
@@ -48,6 +47,43 @@ export class LanguageProject extends Destroyable {
         return item;
     }
 
+    protected getTranslator(locale?: string): ILanguageTranslator {
+        if (_.isNil(locale)) {
+            locale = this.defaultLocale;
+        }
+        let item = this.locales.get(locale);
+        if (_.isNil(item)) {
+            throw new ExtendedError(`Unable to find "${locale}" locale`);
+        }
+        return item;
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    // 	Proxy Methods
+    //
+    //--------------------------------------------------------------------------
+
+    public compile<T = any>(key: string, params?: T, locale?: string): string {
+        return this.getTranslator(locale).compile(key, params);
+    }
+
+    public translate<T = any>(key: string, params?: T, locale?: string): string {
+        return this.getTranslator(locale).translate(key, params);
+    }
+
+    public isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean, locale?: string): boolean {
+        return this.getTranslator(locale).isHasTranslation(key, isOnlyIfNotEmpty);
+    }
+
+    public getRawTranslated<T = any>(locale?: string): T {
+        return this.getTranslator(locale).getRawTranslated();
+    }
+
+    public getRawTranslation<T = any>(locale?: string): T {
+        return this.getTranslator(locale).getRawTranslation();
+    }
+
     //--------------------------------------------------------------------------
     //
     // 	Public Methods
@@ -59,39 +95,6 @@ export class LanguageProject extends Destroyable {
         for (let locale of locales) {
             this.locales.set(locale, await this.createTranslator(path, locale, prefixes));
         }
-    }
-
-    public translate(key: string, params?: any, locale?: string): string {
-        if (_.isNil(locale)) {
-            locale = this.defaultLocale;
-        }
-        let translator = this.locales.get(locale);
-        if (_.isNil(translator)) {
-            throw new ExtendedError(`Unable to find "${locale}" locale`);
-        }
-        return translator.translate(key, params);
-    }
-
-    public getRawTranslated<T = any>(locale?: string): T {
-        if (_.isNil(locale)) {
-            locale = this.defaultLocale;
-        }
-        let translator = this.locales.get(locale);
-        if (_.isNil(translator)) {
-            throw new ExtendedError(`Unable to find "${locale}" locale`);
-        }
-        return translator.getRawTranslated();
-    }
-
-    public getRawTranslation<T = any>(locale?: string): T {
-        if (_.isNil(locale)) {
-            locale = this.defaultLocale;
-        }
-        let translator = this.locales.get(locale);
-        if (_.isNil(translator)) {
-            throw new ExtendedError(`Unable to find "${locale}" locale`);
-        }
-        return translator.getRawTranslation();
     }
 
     public destroy(): void {

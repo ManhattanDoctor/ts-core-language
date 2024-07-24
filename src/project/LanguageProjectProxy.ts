@@ -27,13 +27,35 @@ export class LanguageProjectProxy extends Destroyable {
 
     //--------------------------------------------------------------------------
     //
-    // 	Public Methods
+    // 	Proxy Methods
     //
     //--------------------------------------------------------------------------
 
-    public translate(key: string, params?: any, locale?: string): string {
+    public compile<T = any>(key: string, params?: T, locale?: string): string {
+        return this.projects.compile(key, params, this.name, locale);
+    }
+
+    public translate<T = any>(key: string, params?: T, locale?: string): string {
         return this.projects.translate(key, params, this.name, locale);
     }
+
+    public isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean, locale?: string): boolean {
+        return this.projects.isHasTranslation(key, isOnlyIfNotEmpty, this.name, locale);
+    }
+
+    public getRawTranslation<T = any>(locale?: string): Promise<T> {
+        return this.projects.getRawTranslation(this.name, locale);
+    }
+
+    public getRawTranslated<T = any>(locale?: string): T {
+        return this.projects.getRawTranslated(this.name, locale);
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    // 	Public Methods
+    //
+    //--------------------------------------------------------------------------
 
     public destroy(): void {
         if (this.isDestroyed) {

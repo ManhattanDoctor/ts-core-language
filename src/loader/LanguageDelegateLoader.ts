@@ -9,7 +9,7 @@ export class LanguageDelegateLoader<T = any> extends LanguageLoader implements I
     //
     // --------------------------------------------------------------------------
 
-    public delegate: LanguageDelegateFunction<T>;
+    public delegate: LanguageLoadDelegateFunction<T>;
 
     // --------------------------------------------------------------------------
     //
@@ -17,7 +17,7 @@ export class LanguageDelegateLoader<T = any> extends LanguageLoader implements I
     //
     // --------------------------------------------------------------------------
 
-    constructor(delegate?: LanguageDelegateFunction<T>) {
+    constructor(delegate?: LanguageLoadDelegateFunction<T>) {
         super();
         this.delegate = delegate;
     }
@@ -47,4 +47,4 @@ export class LanguageDelegateLoader<T = any> extends LanguageLoader implements I
     }
 }
 
-export type LanguageDelegateFunction<T> = (locale: string) => Promise<T>; 
+export type LanguageLoadDelegateFunction<T> = (locale: string) => Promise<T>; 

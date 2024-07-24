@@ -38,6 +38,43 @@ export class LanguageProjects extends Destroyable {
         return item;
     }
 
+    protected getProject(project?: string): LanguageProject {
+        if (_.isNil(project)) {
+            project = this.defaultProject;
+        }
+        let item = this.projects.get(project);
+        if (_.isNil(item)) {
+            throw new ExtendedError(`Unable to find "${project}" project`);
+        }
+        return item;
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    // 	Proxy Methods
+    //
+    //--------------------------------------------------------------------------
+
+    public compile<T = any>(key: string, params?: T, project?: string, locale?: string): string {
+        return this.getProject(project).compile(key, params, locale);
+    }
+
+    public translate<T = any>(key: string, params?: T, project?: string, locale?: string): string {
+        return this.getProject(project).translate(key, params, locale);
+    }
+
+    public isHasTranslation(key: string, isOnlyIfNotEmpty?: boolean, project?: string, locale?: string): boolean {
+        return this.getProject(project).isHasTranslation(key, isOnlyIfNotEmpty, locale);
+    }
+
+    public getRawTranslation<T = any>(project?: string, locale?: string): Promise<T> {
+        return this.getProject(project).getRawTranslation(locale);
+    }
+
+    public getRawTranslated<T = any>(project?: string, locale?: string): T {
+        return this.getProject(project).getRawTranslated(locale);
+    }
+
     //--------------------------------------------------------------------------
     //
     // 	Public Methods
@@ -51,37 +88,15 @@ export class LanguageProjects extends Destroyable {
         }
     }
 
-    public translate(key: string, params?: any, project?: string, locale?: string): string {
-        if (_.isNil(project)) {
-            project = this.defaultProject;
+    public destroy(): void {
+        if (this.isDestroyed) {
+            return;
         }
-        let item = this.projects.get(project);
-        if (_.isNil(item)) {
-            throw new ExtendedError(`Unable to find "${project}" project`);
-        }
-        return item.translate(key, params, locale);
-    }
+        super.destroy();
 
-    public getRawTranslation<T = any>(project?: string, locale?: string): Promise<T> {
-        if (_.isNil(project)) {
-            project = this.defaultProject;
-        }
-        let item = this.projects.get(project);
-        if (_.isNil(item)) {
-            throw new ExtendedError(`Unable to find "${project}" project`);
-        }
-        return item.getRawTranslation(locale);
-    }
-
-    public getRawTranslated<T = any>(project?: string, locale?: string): T {
-        if (_.isNil(project)) {
-            project = this.defaultProject;
-        }
-        let item = this.projects.get(project);
-        if (_.isNil(item)) {
-            throw new ExtendedError(`Unable to find "${project}" project`);
-        }
-        return item.getRawTranslated(locale);
+        this.loadTranslationRawFunction = null;
+        this.projects.clear();
+        this.projects = null;
     }
 }
 

@@ -2,6 +2,7 @@ import { IDestroyable, ExtendedError } from '@ts-core/common';
 import { Language } from './Language';
 import MessageFormat, * as MESSAGE_FORMAT from '@messageformat/core';
 import * as _ from 'lodash';
+
 export class LanguageLocale<T = any> extends IDestroyable {
     // --------------------------------------------------------------------------
     //

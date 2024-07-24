@@ -8,14 +8,22 @@ import * as _ from 'lodash';
 export class LanguageTranslator extends DestroyableContainer implements ILanguageTranslator {
     // --------------------------------------------------------------------------
     //
+    // 	Constants
+    //
+    // --------------------------------------------------------------------------
+
+    public static DEFAULT_LINK_SYMBOL = '⇛';
+
+    // --------------------------------------------------------------------------
+    //
     // 	Properties
     //
     // --------------------------------------------------------------------------
 
     protected _locale: LanguageLocale;
 
-    protected linkSymbol: string;
     protected observer: Subject<ObservableData<LanguageTranslatorEvent, ExtendedError>>;
+    protected linkSymbol: string;
     protected rawTranslated: any;
 
     // --------------------------------------------------------------------------
@@ -26,10 +34,10 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
 
     constructor(linkSymbol?: string, locale?: LanguageLocale) {
         super();
-        this.observer = new Subject();
-
+        
         this.locale = locale;
-        this.linkSymbol = !_.isNil(linkSymbol) ? linkSymbol : '⇛';
+        this.observer = new Subject();
+        this.linkSymbol = !_.isNil(linkSymbol) ? linkSymbol : LanguageTranslator.DEFAULT_LINK_SYMBOL;
     }
 
     // --------------------------------------------------------------------------

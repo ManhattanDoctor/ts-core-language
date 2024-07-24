@@ -43,7 +43,7 @@ export class LanguageProjectProxy extends Destroyable {
         return this.projects.isHasTranslation(key, isOnlyIfNotEmpty, this.name, locale);
     }
 
-    public getRawTranslation<T = any>(locale?: string): Promise<T> {
+    public getRawTranslation<T = any>(locale?: string): T {
         return this.projects.getRawTranslation(this.name, locale);
     }
 

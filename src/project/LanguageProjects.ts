@@ -67,7 +67,7 @@ export class LanguageProjects extends Destroyable {
         return this.getProject(project).isHasTranslation(key, isOnlyIfNotEmpty, locale);
     }
 
-    public getRawTranslation<T = any>(project?: string, locale?: string): Promise<T> {
+    public getRawTranslation<T = any>(project?: string, locale?: string): T {
         return this.getProject(project).getRawTranslation(locale);
     }
 

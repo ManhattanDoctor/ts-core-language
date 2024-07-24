@@ -1,10 +1,11 @@
 
 import { Destroyable, ExtendedError } from '@ts-core/common';
 import { ILanguageTranslator, LanguageTranslator } from '../translator';
+import { LanguageLoadTranslationRawFunction } from './LanguageProjects';
 import { LanguageLocale } from '../LanguageLocale';
 import * as _ from 'lodash';
 
-export abstract class LanguageProject extends Destroyable {
+export class LanguageProject extends Destroyable {
     //--------------------------------------------------------------------------
     //
     // 	Properties
@@ -16,16 +17,19 @@ export abstract class LanguageProject extends Destroyable {
     protected locales: Map<string, ILanguageTranslator>;
     protected defaultLocale: string;
 
+    protected loadTranslationRawFunction: LanguageLoadTranslationRawFunction;
+
     //--------------------------------------------------------------------------
     //
     // 	Constructor
     //
     //--------------------------------------------------------------------------
 
-    constructor(name: string) {
+    constructor(name: string, loadRawFunction: LanguageLoadTranslationRawFunction) {
         super();
         this._name = name;
         this.locales = new Map();
+        this.loadTranslationRawFunction = loadRawFunction;
     }
 
     //--------------------------------------------------------------------------
@@ -35,7 +39,7 @@ export abstract class LanguageProject extends Destroyable {
     //--------------------------------------------------------------------------
 
     protected async createLocale(path: string, locale: string, prefixes: Array<string>): Promise<LanguageLocale> {
-        return new LanguageLocale(locale, await this.loadRawTranslation(path, locale, prefixes));
+        return new LanguageLocale(locale, await this.loadTranslationRawFunction(path, this.name, locale, prefixes));
     }
 
     protected async createTranslator(path: string, locale: string, prefixes: Array<string>): Promise<ILanguageTranslator> {
@@ -43,10 +47,6 @@ export abstract class LanguageProject extends Destroyable {
         item.locale = await this.createLocale(path, locale, prefixes);
         return item;
     }
-
-    protected abstract loadRawTranslation<T = any>(path: string, locale: string, prefixes: Array<string>): Promise<T>;
-
-    // return new FileLoader(`${path}/${this.name}/`, prefixes).load(locale);
 
     //--------------------------------------------------------------------------
     //

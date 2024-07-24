@@ -2,7 +2,7 @@ import { Destroyable, ExtendedError } from '@ts-core/common';
 import { LanguageProject } from './LanguageProject';
 import * as _ from 'lodash';
 
-export abstract class LanguageProjects extends Destroyable {
+export class LanguageProjects extends Destroyable {
     //--------------------------------------------------------------------------
     //
     // 	Properties
@@ -12,15 +12,18 @@ export abstract class LanguageProjects extends Destroyable {
     protected projects: Map<string, LanguageProject>;
     protected defaultProject: string;
 
+    public loadTranslationRawFunction: LanguageLoadTranslationRawFunction;
+
     //--------------------------------------------------------------------------
     //
     // 	Constructor
     //
     //--------------------------------------------------------------------------
 
-    constructor() {
+    constructor(loadTranslationRawFunction: LanguageLoadTranslationRawFunction) {
         super();
         this.projects = new Map();
+        this.loadTranslationRawFunction = loadTranslationRawFunction;
     }
 
     //--------------------------------------------------------------------------
@@ -29,7 +32,11 @@ export abstract class LanguageProjects extends Destroyable {
     //
     //--------------------------------------------------------------------------
 
-    protected abstract createProject(path: string, project: ILanguageProjectSettings): Promise<LanguageProject>;
+    protected async createProject(path: string, project: ILanguageProjectSettings): Promise<LanguageProject> {
+        let item = new LanguageProject(project.name, this.loadTranslationRawFunction);
+        await item.load(path, project.locales, project.prefixes);
+        return item;
+    }
 
     //--------------------------------------------------------------------------
     //
@@ -77,6 +84,8 @@ export abstract class LanguageProjects extends Destroyable {
         return item.getRawTranslated(locale);
     }
 }
+
+export type LanguageLoadTranslationRawFunction = <T = any>(path: string, project: string, locale: string, prefixes: Array<string>) => Promise<T>;
 
 export interface ILanguageProjectSettings {
     name: string;

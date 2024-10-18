@@ -1,3 +1,4 @@
+import { ExtendedError, ObjectUtil } from '@ts-core/common';
 import * as _ from 'lodash';
 
 export class LanguageUtil {
@@ -74,6 +75,24 @@ export class LanguageUtil {
 
     public static getByPath<T>(raw: T, path: string, options?: ILanguageTranslationOptions): Array<string> {
         return LanguageUtil.addItems(new Array(), !_.isEmpty(path) ? _.get(raw, path) : raw, options);
+    }
+
+    public static getErrorTranslation<U, V>(error: ExtendedError<U, V>, prefixKey?: string): { key: string, params: any } {
+        if(_.isNil(prefixKey)) {
+            prefixKey = 'error';
+        }
+        let key = `${prefixKey}.${error.code}`;
+        let params = { code: error.code, message: error.message, details: error.details };
+        if (!_.isNil(error.details)) {
+            let details = error.details.toString();
+            if (ObjectUtil.isJSON(details)) {
+                params = JSON.parse(details);
+            }
+        }
+        if (_.isEmpty(params.message)) {
+            params.message = error.message;
+        }
+        return { key, params };
     }
 }
 

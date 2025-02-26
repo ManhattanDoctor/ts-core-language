@@ -78,7 +78,7 @@ export class LanguageUtil {
     }
 
     public static getErrorTranslation<U, V>(error: ExtendedError<U, V>, prefixKey?: string): { key: string, params: any } {
-        if(_.isNil(prefixKey)) {
+        if (_.isNil(prefixKey)) {
             prefixKey = 'error';
         }
         let key = `${prefixKey}.${error.code}`;
@@ -86,7 +86,7 @@ export class LanguageUtil {
         if (!_.isNil(error.details)) {
             let details = error.details.toString();
             if (ObjectUtil.isJSON(details)) {
-                params = JSON.parse(details);
+                params.details = JSON.parse(details);
             }
         }
         if (_.isEmpty(params.message)) {

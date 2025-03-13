@@ -77,27 +77,24 @@ export class LanguageUtil {
         return LanguageUtil.addItems(new Array(), !_.isEmpty(path) ? _.get(raw, path) : raw, options);
     }
 
-    public static getErrorTranslation<U, V>(error: ExtendedError<U, V>, prefixKey?: string): { key: string, params: any } {
-        if (_.isNil(prefixKey)) {
-            prefixKey = 'error';
-        }
-        let key = `${prefixKey}.${error.code}`;
-        let params = { code: error.code, message: error.message, details: error.details };
-        if (!_.isNil(error.details)) {
-            let details = error.details.toString();
-            if (ObjectUtil.isJSON(details)) {
-                params.details = JSON.parse(details);
+    public static getErrorTranslation<U, V>(error: ExtendedError<U, V>, prefix: string = 'error'): { key: string, params: any } {
+        let { code, message, details } = error;
+        let params = { code, message, details };
+        if (!_.isNil(details)) {
+            if (_.isObject(details)) {
+                Object.assign(params, details);
+            }
+            else if (ObjectUtil.isJSON(details.toString())) {
+                Object.assign(params, JSON.parse(details.toString()));
             }
         }
-        if (_.isEmpty(params.message)) {
-            params.message = error.message;
-        }
+        let key = !_.isNil(prefix) ? `${prefix}.${code}` : code.toString();
         return { key, params };
     }
 }
 
 export interface ILanguageTranslationOptions {
     isDeep?: boolean;
-    isAddDot?: boolean;
     exclude?: Array<string>;
+    isAddDot?: boolean;
 }

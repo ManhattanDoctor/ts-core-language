@@ -10,8 +10,8 @@ export * from './loader/LanguageLoader';
 export * from './loader/ILanguageLoader';
 export * from './loader/LanguageUrlLoader';
 export * from './loader/LanguageFileLoader';
+export * from './loader/LanguageProxyLoader';
 export * from './loader/LanguagePreloadLoader';
-export * from './loader/LanguageDelegateLoader';
 //
 export * from './translator/LanguageTranslator';
 export * from './translator/ILanguageTranslator';

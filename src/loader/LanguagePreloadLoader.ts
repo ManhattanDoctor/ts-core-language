@@ -7,7 +7,7 @@ export class LanguagePreloadLoader<T = any> extends LanguageLoader {
     //
     // --------------------------------------------------------------------------
 
-    public locale: string;
+
     public locales: Map<string, T>;
 
     // --------------------------------------------------------------------------

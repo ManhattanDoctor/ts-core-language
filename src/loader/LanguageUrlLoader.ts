@@ -1,8 +1,8 @@
-import { LanguageDelegateLoader } from './LanguageDelegateLoader';
+import { LanguageProxyLoader } from './LanguageProxyLoader';
 import axios from 'axios';
 import * as _ from 'lodash';
 
-export class LanguageUrlLoader<T = any> extends LanguageDelegateLoader<T> {
+export class LanguageUrlLoader<T = any> extends LanguageProxyLoader<T> {
     // --------------------------------------------------------------------------
     //
     //  Constructor

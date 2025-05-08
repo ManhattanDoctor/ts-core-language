@@ -9,6 +9,7 @@ export abstract class LanguageLoader<T = any> extends Destroyable implements ILa
     //
     // --------------------------------------------------------------------------
 
+    public locale: string;
     public translation: T;
 
     // --------------------------------------------------------------------------
@@ -27,6 +28,7 @@ export abstract class LanguageLoader<T = any> extends Destroyable implements ILa
 
     public async load(locale: string): Promise<T> {
         this.translation = await this.loadLocale(locale);
+        this.locale = locale;
         return this.translation;
     }
 
@@ -35,6 +37,7 @@ export abstract class LanguageLoader<T = any> extends Destroyable implements ILa
             return;
         }
         super.destroy();
+        this.locale = null;
         this.translation = null;
     }
 }

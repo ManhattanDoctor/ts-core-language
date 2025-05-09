@@ -56,7 +56,7 @@ export class LanguageTranslator extends DestroyableContainer implements ILanguag
         let text = null;
         let type = null;
         if (_.isNil(this.locale)) {
-            text = `${key} (locale is undefined)`;
+            text = `${key}`;
             type = LanguageTranslatorEvent.LOCALE_UNDEFINED;
         } else if (_.isNil(key)) {
             text = `Key is undefined`;

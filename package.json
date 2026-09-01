@@ -1,7 +1,7 @@
 {
     "name": "@ts-core/language",
     "version": "3.0.38",
-    "description": "Classes and utils for language",
+    "description": "TypeScript library for internationalization (i18n): multi-language support, flexible translation loaders, pluralization and runtime locale switching",
     "main": "./cjs/public-api.js",
     "module": "./esm/public-api.js",
     "exports": {
@@ -29,7 +29,16 @@
         "url": "git+https://github.com/ManhattanDoctor/ts-core-language.git"
     },
     "keywords": [
-        "typescript"
+        "typescript",
+        "i18n",
+        "internationalization",
+        "localization",
+        "translation",
+        "language",
+        "locale",
+        "pluralization",
+        "frontend",
+        "backend"
     ],
     "bugs": {
         "url": "https://github.com/ManhattanDoctor/ts-core-language/issues"
